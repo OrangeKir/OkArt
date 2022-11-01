@@ -1,6 +1,7 @@
 using System.Data;
 using MediatR;
 using Npgsql;
+using OkArt.Infrastructure.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 var type = typeof(Program);
@@ -23,6 +24,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+MigrationsHelper.Migrate(dbConnectionString);
 
 app.UseHttpsRedirection();
 
