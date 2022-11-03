@@ -2,10 +2,12 @@ using System.Data;
 using MediatR;
 using Npgsql;
 using OkArt.Infrastructure.Helpers;
+using OkArt.Integrations;
 
 var builder = WebApplication.CreateBuilder(args);
 var type = typeof(Program);
 var dbConnectionString = builder.Configuration.GetConnectionString("DbConnectionString");
+var fsConnectionString = builder.Configuration.GetConnectionString("FsConnectionString");
 
 // Add services to the container.
 
@@ -15,6 +17,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(type);
 builder.Services.AddScoped<IDbConnection>(_ => new NpgsqlConnection(dbConnectionString));
+builder.Services.AddScoped<IFsContext>(_ => new FsContext(fsConnectionString));
 
 var app = builder.Build();
 
