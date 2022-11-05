@@ -24,6 +24,9 @@
       <Compile Update="Integrations\IFsContext.cs">
         <DependentUpon>FsContext.cs</DependentUpon>
       </Compile>
+      <Compile Update="Handlers\GetSolution.cs">
+        <DependentUpon>GetSolutionHandler.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>

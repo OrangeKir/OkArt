@@ -14,7 +14,10 @@ var fsConnectionString = builder.Configuration.GetConnectionString("FsConnection
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(o =>
+{
+    o.CustomSchemaIds(t => t.ToString());
+});
 builder.Services.AddMediatR(type);
 builder.Services.AddScoped<IDbConnection>(_ => new NpgsqlConnection(dbConnectionString));
 builder.Services.AddScoped<IFsContext>(_ => new FsContext(fsConnectionString));

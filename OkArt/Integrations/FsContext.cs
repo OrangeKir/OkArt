@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using System.Text.Json.Serialization;
 using FileInfo = OkArt.Integrations.GlobalContracts.FileInfo;
 
 namespace OkArt.Integrations;
@@ -17,7 +16,7 @@ public class FsContext : IFsContext
     {
         var name = Guid.NewGuid().ToString();
 
-        var fileBytes = await JsonContent.Create(fileInfo).ReadAsStringAsync();
+        var fileBytes = JsonSerializer.Serialize(fileInfo);
         while (true)
         {
             try
@@ -45,9 +44,8 @@ public class FsContext : IFsContext
     public async Task<FileInfo> ReadFile(string name, CancellationToken token)
     {
         using var stream = new StreamReader(Path.Combine(_connectionString, name));
-        var fileBytes = new Memory<char>();
-        await stream.ReadAsync(fileBytes, token);
+        var content = await stream.ReadToEndAsync();
 
-        return JsonDocument.Parse(fileBytes).Deserialize<FileInfo>()!;
+        return JsonSerializer.Deserialize<FileInfo>(content)!;
     }
 }
